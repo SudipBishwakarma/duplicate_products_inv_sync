@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content_left %}
+    <div id="ajax-dom" class="col-md-6"></div>
+{% endblock %}
+
+{% block content_right %}
+    <div class="righ-col">
+        <h1>App Preferences</h1>
+        <form id="preferences">
+            {% csrf_token %}
+            <ul>
+                <li>
+                    Duplicate SKU sync
+                    <input type="checkbox" {{ preferences.activate|yesno:'checked,' }} data-toggle="toggle" name="activate">
+                </li>
+            </ul>
+            <hr>
+            <h2>Only include tags</h2>
+            <div class="bs-example">
+                <input type="text" value="{{ preferences.tags }}" data-role="tagsinput" name="tags"/>
+            </div>
+            <div class="apply-btn">
+                <button type="submit">Apply</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+  <script>
+    $(document).ready(checkBgTask());
+    var checkTask = setInterval(checkBgTask, 10000);
+
+    function checkBgTask() {
+      $.ajax({
+        url: '{% url "app:bg_task" %}',
+        type: 'GET'
+      })
+      .done((data) => {
+       if(data.bg_task) {
+        checkTask;
+        $('#ajax-dom').html(`<div class="msg msg1"><p>${data.msg}</p></div>`);
+       }
+       else {
+        clearInterval(checkTask);
+        $('#ajax-dom').html(`<div class="msg msg2"><p>${data.msg}</p></div>`);
+       }
+      })
+      .fail((err) => {
+        console.log(err)
+      })
+    }
+
+    $('#preferences').submit(set_preferences);
+
+    function set_preferences(e) {
+        e.preventDefault();
+        $.ajax({
+            url: '{% url 'app:preferences' %}',
+            type: 'POST',
+            data: new FormData(this),
+            processData: false,
+            contentType: false
+        })
+        .done((data) => {
+            alert('Preferences saved.');
+        })
+        .fail((err) => {
+            console.log(err)
+        })
+    }
+  </script>
+{% endblock %}

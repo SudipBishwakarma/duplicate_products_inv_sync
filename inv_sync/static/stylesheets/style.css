@@ -1,0 +1,66 @@
+body { margin: 0; padding: 0; font-size: 13px; font-family: 'Roboto', sans-serif; background-color: #cecece; color: #565656;}
+
+.header { background-color:#2d3337; padding: 25px 25px 25px 50px; margin-bottom: 10px;}
+.header h1 a { color: #fff; text-decoration:none; font-size: 28px;}
+
+/* Flash Messages */
+.error-message, .info-message { background: #faf7ea; border-bottom: 1px solid #e8e6d9; padding: 10px; font-weight: bold; text-align:center; margin-bottom:10px; }
+.error-message { color: #6e290b; }
+.info-message { color: #549d19; }
+
+a { color: #565656; text-decoration: none;}
+p { padding: 0; line-height: 20px;}
+.msg { display: block; padding: 15px 25px; margin-bottom: 1em; border-radius: 3px;}
+.msg1 { background: #f4ffe7;}
+.msg2 { background: #e4f7ff;}
+.msg p:last-child { margin-bottom: 0; }
+.righ-col { display: block; background: #f9f9f9; padding: 15px 25px; margin-bottom: 1em; border-radius: 3px;}
+.righ-col h1 { display: block; font-size: 18px; color: #FF9800; border-bottom: 1px solid #e6e6e6; padding-bottom: 10px; }
+.righ-col ul { display: block; margin: 0; padding: 5px 5px 5px 0px; list-style:none; }
+.righ-col ul li { margin-bottom: 10px;}
+.toggle-handle { z-index: 333; background: #eaeaea;}
+.toggle-off.btn { background: #d0d0d0; }
+.toggle.btn { height: 25px; min-height: 25px;}
+.btn {padding: .375rem .75rem; font-size: 13px; line-height: 12px;}
+.btn:hover { cursor: pointer;}
+hr { margin: 5px 0;}
+.righ-col h2 { display: inline-block; font-size: 16px; color: #3F51B5; padding: 10px 0; font-weight: normal; }
+.apply-btn { display: block; text-align: center;}
+.apply-btn button { display: block; width: 100%; background: #4CAF50; color: #fff; font-size: 14px; border-radius: 3px; padding: 15px 0; border: 0; margin-top: 15px; }
+.apply-btn button:hover { border: none; background: #368939;}
+
+/* * bootstrap-tagsinput v0.8.0 * */
+.bootstrap-tagsinput { background-color: #fff; border: 1px solid #ccc; box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); display: inline-block; padding: 4px 6px; color: #555; vertical-align: middle; border-radius: 4px; width: 100%; line-height: 22px; cursor: text; }
+.bootstrap-tagsinput input { border: none; box-shadow: none; outline: none; background-color: transparent; padding: 0 6px; margin: 0; width: auto; max-width: inherit; }
+.bootstrap-tagsinput.form-control input::-moz-placeholder { color: #777; opacity: 1; }
+.bootstrap-tagsinput.form-control input:-ms-input-placeholder { color: #777; }
+.bootstrap-tagsinput.form-control input::-webkit-input-placeholder { color: #777; }
+.bootstrap-tagsinput input:focus { border: none; box-shadow: none; }
+.bootstrap-tagsinput .badge { margin: 2px 0; padding:5px 8px; margin-right: 5px; }
+.bootstrap-tagsinput .badge [data-role="remove"] { margin-left: 8px; cursor: pointer; }
+.bootstrap-tagsinput .badge [data-role="remove"]:after { content: "×"; padding: 0px 4px; background-color:rgba(0, 0, 0, 0.1); border-radius:50%; font-size:13px }
+.bootstrap-tagsinput .badge [data-role="remove"]:hover:after { background-color:rgba(0, 0, 0, 0.62);}
+.bootstrap-tagsinput .badge [data-role="remove"]:hover:active { box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125); }
+.tt-menu { position: absolute; top: 100%; left: 0; z-index: 1000; display: none; float: left; min-width: 160px; padding: 5px 0; margin: 2px 0 0; list-style: none; font-size: 14px; background-color: #ffffff; border: 1px solid #cccccc; border: 1px solid rgba(0, 0, 0, 0.15); border-radius: 4px; -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175); background-clip: padding-box; cursor: pointer; }
+.tt-suggestion { display: block; padding: 3px 20px; clear: both; font-weight: normal; line-height: 1.428571429; color: #333333; white-space: nowrap; }
+.tt-suggestion:hover, .tt-suggestion:focus { color: #ffffff; text-decoration: none; outline: 0; background-color: #428bca; }
+.badge-info { color: #fff; background-color: #17a2b8; font-size: 12px; font-weight: normal; }
+
+.install h1 {
+    font-size: 22px;
+    text-transform: uppercase;
+    padding-right: 25px;
+    padding-top: 38px;
+}
+input#shop {
+    width: 75%;
+    min-height: 45px;
+    padding-left: 10px;
+}
+input[type="submit"] {
+    min-height: 45px;
+    padding: 10px 25px;
+    background: #2196F3;
+    border: none;
+    color: #fff;
+}
