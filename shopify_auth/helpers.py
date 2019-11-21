@@ -22,12 +22,12 @@ def verify_webhook(data, hmac_header):
     return hmac.compare_digest(computed_hmac, hmac_header.encode('utf-8'))
 
 
-def match_tags(tags, _tags):
-    tags_list = tags.split(', ')
-    _tags_list = _tags.split(',')
+def match_tags(product_tags, preferences_tags):
+    _product_tags = product_tags.split(', ')
+    _preferences_tags = preferences_tags.split(',')
     found = False
-    for _ in _tags_list:
-        for tag in tags_list:
+    for _ in _preferences_tags:
+        for tag in _product_tags:
             if _ == tag:
                 found = True
                 break

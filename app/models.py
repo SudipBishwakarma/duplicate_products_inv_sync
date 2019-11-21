@@ -3,7 +3,7 @@ from shopify_auth.models import ShopifyStore
 
 
 class FirstRun(models.Model):
-    myshopify_domain = models.CharField(max_length=100, help_text='Shopify store domain.', unique=True)
+    store = models.OneToOneField(ShopifyStore, on_delete=models.CASCADE, help_text='Store id.')
     status = models.BooleanField(default=True, help_text='True if its the first visit, else False')
     bg_task = models.BooleanField(default=True, help_text='Background task running or completed.')
 

@@ -10,19 +10,20 @@ from . import helpers
 @shopify_login_required
 def index(request):
     store_url = request.session['shopify']['shop_url']
-    user = ShopifyStore.objects.get(myshopify_domain=store_url)
-    if helpers.get_first_run(store_url):
-        tasks.first_run(store_url, verbose_name=f'First run: {user.myshopify_domain}', creator=user)
+    store = ShopifyStore.objects.get(myshopify_domain=store_url)
+    if helpers.get_first_run(store):
+        tasks.first_run(store_url, verbose_name=f'First run: {store.myshopify_domain}', creator=store)
 
     context = {'page_name': 'Home',
-               'preferences': helpers.get_or_set_preferences(user)
+               'preferences': helpers.get_or_set_preferences(store)
                }
     return render(request, 'app/index.html', context)
 
 
 def get_task_status(request):
     store_url = request.session['shopify']['shop_url']
-    return JsonResponse(helpers.task_running(store_url))
+    store = ShopifyStore.objects.get(myshopify_domain=store_url)
+    return JsonResponse(helpers.task_running(store))
 
 
 def set_preferences(request):

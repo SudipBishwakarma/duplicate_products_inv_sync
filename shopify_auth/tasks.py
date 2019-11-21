@@ -8,24 +8,15 @@ from app import helpers
 def first_run(shop_url):
     store = ShopifyHelper(shop_url)
     store.activate_session()
-    helpers.get_first_run(shop_url, False)
+    helpers.get_first_run(store.get_user(), False)
     store.bulk_remove()
     store.bulk_add_products()
     store.bulk_add_variants()
     store.create_webhook()
     store.clear_session()
-    helpers.task_running(shop_url, False)
+    helpers.task_running(store.get_user(), False)
     print('Task: `First Run` completed successfully.')
 
-
-# @background()
-# def task_webhook_product_update(data):
-#     shop_url = data.get('X-Shopify-Shop-Domain')
-#     store = ShopifyHelper(shop_url)
-#     store.activate_session()
-#     store.webhook_product_update(data)
-#     store.clear_session()
-#     print('Task Webhook Product Update completed successfully.')
 
 @background()
 def inventory_levels_update(data):
