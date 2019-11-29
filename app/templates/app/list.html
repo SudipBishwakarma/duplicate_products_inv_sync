@@ -1,5 +1,6 @@
 {% for duplicate in duplicates %}
-    {{ duplicate }}<br>
+    {{ duplicate.id }}, {{ duplicate.image }}, {{ duplicate.p_title }}, {{ duplicate.sku }}, {{ duplicate.product_id }},
+    {{ duplicate.type }}, {{ duplicate.vendor }}, {{ duplicate.v_title }}<br>
 {% endfor %}
 
 <div class="pagination">
