@@ -64,3 +64,9 @@ input[type="submit"] {
     border: none;
     color: #fff;
 }
+
+/*---------------- table ------------------*/
+.table-box { display: block; background: #fff; border-radius: 3px; padding: 1em; font-size: 14px;   }
+.pro-anch a { font-size: 18px; color: #007ace;}
+.pro-anch p { color: #333333; font-weight: 500;}
+/*---------------- end table ------------------*/

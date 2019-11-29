@@ -2,9 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 import shopify
 from shopify_auth.decorators import shopify_login_required
-from shopify_auth.models import ShopifyStore, Product, Variant
+from shopify_auth.models import ShopifyStore, Duplicate
 from shopify_auth import tasks
 from . import helpers
+from django.core.paginator import Paginator
 
 
 @shopify_login_required
@@ -15,8 +16,7 @@ def index(request):
         tasks.first_run(store_url, verbose_name=f'First run: {store.myshopify_domain}', creator=store)
 
     context = {'page_name': 'Home',
-               'preferences': helpers.get_or_set_preferences(store)
-               }
+               'preferences': helpers.get_or_set_preferences(store)}
     return render(request, 'app/index.html', context)
 
 
@@ -40,6 +40,17 @@ def set_preferences(request):
         helpers.get_or_set_preferences(user, activate, tags)
 
     return HttpResponse('Done')
+
+
+def get_duplicates(request):
+    store_url = request.session['shopify']['shop_url']
+    store = ShopifyStore.objects.get(myshopify_domain=store_url)
+    duplicates_list = helpers.get_duplicates(store)
+    paginator = Paginator(duplicates_list, 25)
+
+    page = request.GET.get('page')
+    duplicates = paginator.get_page(page)
+    return render(request, 'app/list.html', {'duplicates': duplicates})
 
 
 def handler404(request, exception):

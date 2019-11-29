@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block content_left %}
-    <div id="ajax-dom" class="col-md-6"></div>
+    <div class="col-md-6">
+        <div id="ajax-dom"></div>
+    </div>
 {% endblock %}
 
 {% block content_right %}
@@ -45,6 +47,7 @@
        else {
         clearInterval(checkTask);
         $('#ajax-dom').html(`<div class="msg msg2"><p>${data.msg}</p></div>`);
+        $('#ajax-dom').after(data.table);
        }
       })
       .fail((err) => {

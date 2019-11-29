@@ -6,6 +6,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('bg_task/', views.get_task_status, name='bg_task'),
     path('preferences/', views.set_preferences, name='preferences'),
+    path('products/', views.get_duplicates, name='products-list'),
 ]
 
 # handler404 = views.handler404

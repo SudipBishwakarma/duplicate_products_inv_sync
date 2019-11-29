@@ -115,7 +115,8 @@ class ShopifyHelper:
                         variant.qty = result['variant']['inventoryQuantity']
                         variant.save()
 
-                        product, _created = Product.objects.get_or_create(store=self._user, product_id=variant.product_id)
+                        product, _created = Product.objects.get_or_create(store=self._user,
+                                                                          product_id=variant.product_id)
                         if _created:
                             product.title = result['variant']['product']['title']
                             product.vendor = result['variant']['product']['vendor']
@@ -229,7 +230,7 @@ class ShopifyHelper:
                                       vendor=product.vendor,
                                       tags=product.tags,
                                       type=product.product_type,
-                                      image=product.image.thumb if product.image else None) for product in products]
+                                      image=product.image.thumb if product.image else '') for product in products]
             Product.objects.bulk_create(product_models)
             cursor = shopify.ShopifyResource.connection.response.headers.get('Link')
             for _ in cursor.split(','):

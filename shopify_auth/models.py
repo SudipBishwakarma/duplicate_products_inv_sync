@@ -44,3 +44,44 @@ class Variant(models.Model):
 
     def __str__(self):
         return self.title
+
+
+# Not needed anymore.
+class DuplicateManager(models.Manager):
+    """Model Manager for duplicate variants."""
+    def get_duplicates(self, store, start=0, end=25):
+        _store = store.id
+        from django.db import connection
+        with connection.cursor() as cursor:
+            cursor.execute(f"""
+            SELECT v.variant_id, p.image, p.title as p_title, v.sku, p.product_id, p.type, p.vendor, v.title as v_title
+            FROM shopify_auth_product AS p JOIN shopify_auth_variant AS v ON p.product_id=v.product_id WHERE
+            p.store_id={_store} AND sku IN (SELECT sku FROM shopify_auth_variant WHERE store_id={_store} GROUP BY sku
+            HAVING COUNT(sku) > 1) ORDER BY v.variant_id LIMIT {start}, {end}""")
+            result_list = []
+            for row in cursor.fetchall():
+                p = self.model(id=row[0],
+                               image=row[1],
+                               p_title=row[2],
+                               sku=row[3],
+                               product_id=row[4],
+                               type=row[5],
+                               vendor=row[6],
+                               v_title=row[7])
+                result_list.append(p)
+            return result_list
+
+
+class Duplicate(models.Model):
+    """Model View representing duplicate variants from Product and Variant models."""
+    image = models.CharField(max_length=300, help_text='Product image', null=True, blank=True)
+    p_title = models.CharField(max_length=200, help_text='Product title', null=True, blank=True)
+    sku = models.CharField(max_length=30, help_text='Variant SKU.', null=True, blank=True)
+    product_id = models.BigIntegerField('product ID', help_text='Parent product of variant.', null=True, blank=True)
+    type = models.CharField(max_length=200, help_text='Product type', null=True, blank=True)
+    vendor = models.CharField(max_length=200, help_text='Product vendor.', null=True, blank=True)
+    v_title = models.CharField(max_length=200, help_text='Variant title', null=True, blank=True)
+    # objects = DuplicateManager()
+
+    class Meta:
+        managed = False
