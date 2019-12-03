@@ -67,6 +67,7 @@ input[type="submit"] {
 
 /*---------------- table ------------------*/
 .table-box { display: block; background: #fff; border-radius: 3px; padding: 1em; font-size: 14px;   }
-.pro-anch a { font-size: 18px; color: #007ace;}
+.pro-anch a { font-size: 16px; color: #007ace;}
 .pro-anch p { color: #333333; font-weight: 500;}
+.img_thumb { width: auto; align: center;}
 /*---------------- end table ------------------*/

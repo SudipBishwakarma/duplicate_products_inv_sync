@@ -47,7 +47,10 @@
        else {
         clearInterval(checkTask);
         $('#ajax-dom').html(`<div class="msg msg2"><p>${data.msg}</p></div>`);
-        $('#ajax-dom').after(data.table);
+        $('#ajax-dom').after(`
+            <div class="table-box">
+                ${data.table} | <a href="{% url 'app:products-list' %}">View List</a>
+            </div>`);
        }
       })
       .fail((err) => {

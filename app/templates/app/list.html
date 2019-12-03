@@ -1,7 +1,47 @@
-{% for duplicate in duplicates %}
-    {{ duplicate.id }}, {{ duplicate.image }}, {{ duplicate.p_title }}, {{ duplicate.sku }}, {{ duplicate.product_id }},
-    {{ duplicate.type }}, {{ duplicate.vendor }}, {{ duplicate.v_title }}<br>
-{% endfor %}
+{% extends "base.html" %}
+
+{% block duplicates %}
+<div class="table-box">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Product</th>
+            <th scope="col">Type</th>
+            <th scope="col">Vendor</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if count > 0 %}
+                {% for duplicate in duplicates %}
+                    <tr>
+                        <td>
+                            <a href="https://{{ store_url }}/admin/products/{{ duplicate.product_id }}/variants/{{ duplicate.id }}" target="_blank">
+                                <img src="{% if duplicate.image == '' %}{{ no_image }}{% else %}{{ duplicate.image }}{% endif %}" alt="" class="img_thumb">
+                            </a>
+                        </td>
+                        <td class="pro-anch">
+                            <a href="https://{{ store_url }}/admin/products/{{ duplicate.product_id }}/variants/{{ duplicate.id }}" target="_blank">
+                                {{ duplicate.p_title }}{% if duplicate.v_title != 'Default Title' %} - {{ duplicate.v_title }}{% endif %}
+                            </a>
+                            <p>SKU: {{ duplicate.sku }}</p>
+                        </td>
+                        <td>
+                            <p>{{ duplicate.type }}</p>
+                        </td>
+                        <td>
+                            <p>{{ duplicate.vendor }}</p>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="4">No products found.</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
 
 <div class="pagination">
     <span class="step-links">
@@ -20,3 +60,4 @@
         {% endif %}
     </span>
 </div>
+{% endblock %}

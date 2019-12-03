@@ -50,7 +50,14 @@ def get_duplicates(request):
 
     page = request.GET.get('page')
     duplicates = paginator.get_page(page)
-    return render(request, 'app/list.html', {'duplicates': duplicates})
+    no_image = 'https://cdn.shopify.com/s/assets/' \
+               'no-image-2048-5e88c1b20e087fb7bbe9a3771824e743c244f437e4f8ba93bbf7b11b53f7824c_thumb.gif'
+    return render(request, 'app/list.html',
+                  {'store_url': store_url,
+                   'page_name': 'Duplicates List',
+                   'count': paginator.count,
+                   'duplicates': duplicates,
+                   'no_image': no_image})
 
 
 def handler404(request, exception):

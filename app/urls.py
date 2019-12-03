@@ -9,5 +9,5 @@ urlpatterns = [
     path('products/', views.get_duplicates, name='products-list'),
 ]
 
-# handler404 = views.handler404
-# handler500 = views.handler500
+handler404 = 'app.views.handler404'
+handler500 = 'app.views.handler500'

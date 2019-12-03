@@ -117,13 +117,18 @@ class ShopifyHelper:
 
                         product, _created = Product.objects.get_or_create(store=self._user,
                                                                           product_id=variant.product_id)
+                        image = result['variant']['product']['featuredImage']['transformedSrc']
                         if _created:
                             product.title = result['variant']['product']['title']
                             product.vendor = result['variant']['product']['vendor']
                             product.tags = ', '.join(tag for tag in result['variant']['product']['tags'])
                             product.type = result['variant']['product']['productType']
-                            product.image = result['variant']['product']['featuredImage']['transformedSrc']
+                            product.image = image if image else ''
                             product.save()
+                        else:
+                            if product.image is '' or product.image is None:
+                                product.image = image
+                                product.save()
 
                 if variant.qty != available or created:
                     variant.qty = available
@@ -191,6 +196,8 @@ class ShopifyHelper:
                 product.vendor = vendor
                 product.tags = tags
                 product.type = p_type
+                if product.image is None:
+                    product.image = ''
                 product.save()
                 print("Product: %s" % product.id)
         except Exception as e:

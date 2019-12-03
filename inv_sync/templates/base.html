@@ -48,6 +48,9 @@
                 {% endfor %}
             {% endif %}
         </div>
+        <div class="col-md-12">
+            {% block duplicates %}{% endblock %}
+        </div>
     </div>
     <div class="row">
         {% block content_left %}{% endblock %}
