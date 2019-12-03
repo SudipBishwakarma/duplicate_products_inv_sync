@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'background_task',
     'shopify_auth',
     'app',
+    'mod_wsgi.server',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,4 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'inv_sync/static'),
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'inv_sync/assets')
