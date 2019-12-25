@@ -204,7 +204,7 @@ class ShopifyHelper:
 
     def products_update(self, data):
         product_id = data.get('id')
-        title= data.get('title')
+        title = data.get('title')
         vendor = data.get('vendor')
         tags = data.get('tags')
         p_type = data.get('product_type')
