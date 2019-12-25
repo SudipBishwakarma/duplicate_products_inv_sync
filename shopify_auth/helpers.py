@@ -123,10 +123,10 @@ class ShopifyHelper:
                             product.vendor = result['variant']['product']['vendor']
                             product.tags = ', '.join(tag for tag in result['variant']['product']['tags'])
                             product.type = result['variant']['product']['productType']
-                            product.image = image if image else ''
+                            product.image = image
                             product.save()
                         else:
-                            if product.image is '' or product.image is None:
+                            if product.image is None:
                                 product.image = image
                                 product.save()
 
@@ -164,21 +164,40 @@ class ShopifyHelper:
     def inventory_items_update(self, data):
         inventory_item_id = data.get('id')
         sku = data.get('sku').strip()
+        tracked = data.get('tracked')
         try:
             if self._preferences.activate:
                 variant = Variant.objects.get(store=self._user, inventory_item_id=inventory_item_id)
                 variant.sku = sku
-                variants = Variant.objects.filter(store=self._user, sku=sku)
-                for _ in variants:
-                    if _.id != variant.id:
-                        variant.qty = _.qty
-                        break
-                variant.save()
-                inv_item = shopify.InventoryLevel.find_first(inventory_item_ids=inventory_item_id)
-                shopify.InventoryLevel.set(
-                    inventory_item_id=inventory_item_id,
-                    location_id=inv_item.location_id,
-                    available=variant.qty)
+                variant.inventory_management = True if tracked else False
+                if tracked:
+                    variants = Variant.objects.filter(store=self._user, sku=sku, inventory_management=tracked)
+                    for _ in variants:
+                        if _.id != variant.id:
+                            variant.qty = _.qty
+                            break
+                    if variants:
+                        inv_item = shopify.InventoryLevel.find_first(inventory_item_ids=inventory_item_id)
+                        shopify.InventoryLevel.set(
+                            inventory_item_id=inventory_item_id,
+                            location_id=inv_item.location_id,
+                            available=variant.qty)
+                    else:
+                        client = shopify.GraphQL()
+                        query = '''
+                            query {
+                                inventoryItem(id: "gid://shopify/InventoryItem/%s") {
+                                    variant {
+                                        inventoryQuantity
+                                    }
+                                }
+                            }
+                        ''' % inventory_item_id
+                        result = json.loads(client.execute(query))['data']['inventoryItem']
+                        variant.qty = result['variant']['inventoryQuantity']
+                    variant.save()
+                else:
+                    variant.save()
                 print('Inventory and sku synced for variant %s' % variant.id)
         except Exception as e:
             print(e)
@@ -196,8 +215,24 @@ class ShopifyHelper:
                 product.vendor = vendor
                 product.tags = tags
                 product.type = p_type
+
+                client = shopify.GraphQL()
+                query = '''
+                    query {
+                        product(id: "gid://shopify/Product/%s") {
+                            id
+                            featuredImage {
+                                transformedSrc(maxWidth: 50)
+                            }
+                        }
+                    }
+                ''' % product_id
+
+                result = json.loads(client.execute(query))['data']['product']
+                image = result['featuredImage']
+
                 if product.image is None:
-                    product.image = ''
+                    product.image = image
                 product.save()
                 print("Product: %s" % product.id)
         except Exception as e:
@@ -237,7 +272,7 @@ class ShopifyHelper:
                                       vendor=product.vendor,
                                       tags=product.tags,
                                       type=product.product_type,
-                                      image=product.image.thumb if product.image else '') for product in products]
+                                      image=product.image.thumb if product.image else None) for product in products]
             Product.objects.bulk_create(product_models)
             cursor = shopify.ShopifyResource.connection.response.headers.get('Link')
             for _ in cursor.split(','):
@@ -264,6 +299,7 @@ class ShopifyHelper:
                                       price=variant.price,
                                       sku=variant.sku.strip(),
                                       qty=variant.inventory_quantity,
+                                      inventory_management=True if variant.inventory_management is not None else False,
                                       inventory_item_id=variant.inventory_item_id) for variant in variants]
             Variant.objects.bulk_create(variant_models)
             cursor = shopify.ShopifyResource.connection.response.headers.get('Link')

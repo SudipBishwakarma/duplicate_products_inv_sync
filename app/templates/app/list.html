@@ -17,7 +17,7 @@
                     <tr>
                         <td>
                             <a href="https://{{ store_url }}/admin/products/{{ duplicate.product_id }}/variants/{{ duplicate.id }}" target="_blank">
-                                <img src="{% if duplicate.image == '' %}{{ no_image }}{% else %}{{ duplicate.image }}{% endif %}" alt="" class="img_thumb">
+                                <img src="{% if duplicate.image is None %}{{ no_image }}{% else %}{{ duplicate.image }}{% endif %}" alt="" class="img_thumb">
                             </a>
                         </td>
                         <td class="pro-anch">

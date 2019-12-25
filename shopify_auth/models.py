@@ -40,6 +40,7 @@ class Variant(models.Model):
     price = models.FloatField(help_text='Variant product price.', null=True, blank=True)
     sku = models.CharField(max_length=30, help_text='Variant SKU.', null=True, blank=True)
     qty = models.IntegerField(help_text='Variant quantity', null=True, blank=True)
+    inventory_management = models.BooleanField(help_text='Inventory Managed', default=False, null=True, blank=True)
     inventory_item_id = models.BigIntegerField(help_text='Variant inventory item id', null=True, blank=True)
 
     def __str__(self):

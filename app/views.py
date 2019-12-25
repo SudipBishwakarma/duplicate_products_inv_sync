@@ -1,8 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-import shopify
 from shopify_auth.decorators import shopify_login_required
-from shopify_auth.models import ShopifyStore, Duplicate
+from shopify_auth.models import ShopifyStore
 from shopify_auth import tasks
 from . import helpers
 from django.core.paginator import Paginator
