@@ -233,6 +233,7 @@ class ShopifyHelper:
 
                 if product.image is None:
                     product.image = image
+
                 product.save()
                 print("Product: %s" % product.id)
         except Exception as e:
