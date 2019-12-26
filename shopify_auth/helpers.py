@@ -300,7 +300,7 @@ class ShopifyHelper:
                                       price=variant.price,
                                       sku=variant.sku.strip(),
                                       qty=variant.inventory_quantity,
-                                      inventory_management=True if variant.inventory_management is not None else False,
+                                      inventory_management=True if variant.inventory_management else False,
                                       inventory_item_id=variant.inventory_item_id) for variant in variants]
             Variant.objects.bulk_create(variant_models)
             cursor = shopify.ShopifyResource.connection.response.headers.get('Link')
