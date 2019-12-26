@@ -169,7 +169,7 @@ class ShopifyHelper:
             if self._preferences.activate:
                 variant = Variant.objects.get(store=self._user, inventory_item_id=inventory_item_id)
                 variant.sku = sku
-                variant.inventory_management = True if tracked else False
+                variant.inventory_management = tracked
                 if tracked:
                     variants = Variant.objects.filter(store=self._user, sku=sku, inventory_management=tracked)
                     for _ in variants:
